@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 import '../models/booking.dart';
 import '../models/place.dart';
-import '../models/user.dart'; // ⬅️ TAMBAH INI
+import '../models/user.dart';
 import 'place_detail_page.dart';
 import '../services/api_service.dart';
 import 'add_cafe_page.dart';
@@ -13,13 +13,9 @@ import 'edit_cafe_page.dart';
 
 class CafePage extends StatefulWidget {
   final Function(Booking) onAddBooking;
-  final AppUser user; // ⬅️ user yg sedang login
+  final AppUser user;
 
-  const CafePage({
-    super.key,
-    required this.onAddBooking,
-    required this.user, // ⬅️ wajib diisi waktu panggil CafePage
-  });
+  const CafePage({super.key, required this.onAddBooking, required this.user});
 
   @override
   State<CafePage> createState() => _CafePageState();
@@ -84,7 +80,8 @@ class _CafePageState extends State<CafePage> {
         backgroundColor: Colors.brown.shade600,
         iconTheme: const IconThemeData(color: Colors.white),
         actions: [
-          if (ApiService.currentUser?.role == "admin") // hanya admin
+          if (ApiService.currentUser?.role ==
+              "admin") // hanya admin yang bisa menambahkan
             IconButton(
               icon: const Icon(Icons.add),
               onPressed: () async {
@@ -143,15 +140,15 @@ class _CafePageState extends State<CafePage> {
                   crossAxisCount: _calculateCrossAxisCount(size.width),
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,
-                  childAspectRatio: 3 / 2.3, // sedikit lebih tinggi
+                  childAspectRatio: 3 / 2.3,
                 ),
                 itemBuilder: (ctx, i) {
                   final place = _cafes[i];
                   return _CafeCard(
                     place: place,
                     onAddBooking: widget.onAddBooking,
-                    onRefresh: _fetchCafes, // <-- penting
-                    user: widget.user, // ⬅️ KIRIM user KE CARD
+                    onRefresh: _fetchCafes,
+                    user: widget.user,
                   );
                 },
               ),
@@ -163,8 +160,8 @@ class _CafePageState extends State<CafePage> {
 class _CafeCard extends StatelessWidget {
   final Place place;
   final Function(Booking) onAddBooking;
-  final VoidCallback? onRefresh; // <-- callback untuk refresh
-  final AppUser user; // ⬅️ user yang login
+  final VoidCallback? onRefresh;
+  final AppUser user;
 
   const _CafeCard({
     required this.place,
@@ -187,7 +184,7 @@ class _CafeCard extends StatelessWidget {
               builder: (_) => PlaceDetailPage(
                 place: place,
                 onAddBooking: onAddBooking,
-                user: user, // ⬅️ INI YANG NGILANGIN ERROR
+                user: user,
               ),
             ),
           );

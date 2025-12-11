@@ -77,10 +77,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    final highlightPlaces = _filteredPlaces; // rekomendasi juga ikut filter
+    final highlightPlaces = _filteredPlaces;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F3F7), // ⬅️ bg lembut
+      backgroundColor: const Color(0xFFF5F3F7), // bg lembut
       appBar: AppBar(
         title: const Text('Beranda'),
         centerTitle: true, // ⬅️ judul di tengah

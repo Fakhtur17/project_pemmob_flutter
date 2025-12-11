@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import '../models/booking.dart';
 import '../models/place.dart';
 import '../models/product.dart';
-import '../models/user.dart'; // 👈 IMPORT AppUser
+import '../models/user.dart';
 import 'booking_page.dart';
 import '../services/api_service.dart';
 
@@ -15,7 +15,7 @@ import 'package:url_launcher/url_launcher.dart';
 class PlaceDetailPage extends StatefulWidget {
   final Place place;
   final Function(Booking) onAddBooking;
-  final AppUser user; // 👈 user dari login
+  final AppUser user;
 
   const PlaceDetailPage({
     super.key,
@@ -31,7 +31,7 @@ class PlaceDetailPage extends StatefulWidget {
 class _PlaceDetailPageState extends State<PlaceDetailPage> {
   static const String _baseUrl = 'http://127.0.0.1:8000';
 
-  int _tabIndex = 0; // 0 = Detail, 1 = Menu
+  int _tabIndex = 0;
   bool _loadingProducts = true;
   List<Product> _products = [];
 
@@ -370,10 +370,6 @@ class _PlaceDetailPageState extends State<PlaceDetailPage> {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final place = widget.place;
-
-    // 👇 kalau mau patok ke user yang sedang login:
-    // final bool isAdmin = widget.user.role == "admin";
-    // atau kalau kamu tetap mau pakai ApiService.currentUser:
     final bool isAdmin = ApiService.currentUser?.role == "admin";
 
     return Scaffold(
@@ -471,7 +467,7 @@ class _PlaceDetailPageState extends State<PlaceDetailPage> {
                         place: place,
                         onAddBooking: widget.onAddBooking,
                         products: _products,
-                        user: widget.user, // 👈 INI YANG BENAR
+                        user: widget.user,
                       ),
                     ),
                   );

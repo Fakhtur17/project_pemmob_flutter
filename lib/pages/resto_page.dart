@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 import '../models/place.dart';
 import '../models/booking.dart';
-import '../models/user.dart'; // ⬅️ WAJIB ditambahkan
+import '../models/user.dart';
 import 'place_detail_page.dart';
 import '../services/api_service.dart';
 import 'add_resto_page.dart';
@@ -13,13 +13,9 @@ import 'edit_resto_page.dart';
 
 class RestoPage extends StatefulWidget {
   final Function(Booking) onAddBooking;
-  final AppUser user; // ⬅️ TAMBAHKAN user
+  final AppUser user;
 
-  const RestoPage({
-    super.key,
-    required this.onAddBooking,
-    required this.user, // ⬅️ TAMBAHKAN user
-  });
+  const RestoPage({super.key, required this.onAddBooking, required this.user});
 
   @override
   State<RestoPage> createState() => _RestoPageState();
@@ -147,7 +143,7 @@ class _RestoPageState extends State<RestoPage> {
                     place: place,
                     onAddBooking: widget.onAddBooking,
                     onRefresh: _fetchRestaurants,
-                    user: widget.user, // ⬅️ KIRIM user
+                    user: widget.user,
                   );
                 },
               ),
@@ -160,12 +156,12 @@ class _RestoCard extends StatelessWidget {
   final Place place;
   final Function(Booking) onAddBooking;
   final VoidCallback? onRefresh;
-  final AppUser user; // ⬅️ TERIMA user
+  final AppUser user;
 
   const _RestoCard({
     required this.place,
     required this.onAddBooking,
-    required this.user, // ⬅️ WAJIB
+    required this.user,
     this.onRefresh,
   });
 
@@ -183,7 +179,7 @@ class _RestoCard extends StatelessWidget {
               builder: (_) => PlaceDetailPage(
                 place: place,
                 onAddBooking: onAddBooking,
-                user: user, // ⬅️ PENTING! agar BookingPage dapat user_id
+                user: user,
               ),
             ),
           );

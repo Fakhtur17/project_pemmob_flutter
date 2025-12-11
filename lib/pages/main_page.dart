@@ -1,4 +1,3 @@
-// lib/pages/main_page.dart
 import 'package:flutter/material.dart';
 
 import '../models/user.dart';

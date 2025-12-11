@@ -26,18 +26,15 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  // state dasar
   late String _name;
   late String _email;
-  String? _avatarPath; // path avatar dari backend (misal: "avatars/xxxx.png")
+  String? _avatarPath;
 
   bool _isEditing = false;
   bool _isSaving = false;
 
-  // avatar lokal (dipakai sementara setelah pick image)
   File? _avatarFile;
 
-  // controller form
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _currentPasswordController = TextEditingController();
@@ -51,7 +48,7 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
     _name = widget.user.name;
     _email = widget.user.email;
-    _avatarPath = widget.user.avatar; // inisialisasi dari user yang login
+    _avatarPath = widget.user.avatar;
 
     _nameController.text = _name;
     _emailController.text = _email;
@@ -77,29 +74,24 @@ class _ProfilePageState extends State<ProfilePage> {
 
     if (picked == null) return;
 
-    // tampilkan dulu foto lokal supaya user langsung lihat
     setState(() {
       _avatarFile = File(picked.path);
       _isSaving = true;
     });
 
     try {
-      // 1) upload ke backend
       final updatedUser = await ApiService.uploadAvatar(
         userId: widget.user.id,
         file: _avatarFile!,
       );
 
-      // 2) update state lokal
       setState(() {
         _isSaving = false;
         _name = updatedUser.name;
         _email = updatedUser.email;
         _avatarPath = updatedUser.avatar;
-        // opsional: _avatarFile = null; // kalau mau pakai NetworkImage saja
       });
 
-      // 3) kabari MainPage kalau user berubah
       widget.onUserUpdated(updatedUser);
 
       if (mounted) {
@@ -143,14 +135,12 @@ class _ProfilePageState extends State<ProfilePage> {
     final newPassword = _newPasswordController.text.trim();
 
     try {
-      // 1) UPDATE NAMA + EMAIL KE BACKEND
       final updatedUserFromApi = await ApiService.updateProfile(
         userId: widget.user.id,
         name: newName,
         email: newEmail,
       );
 
-      // 2) KALAU PASSWORD DIISI, UPDATE PASSWORD JUGA
       if (currentPassword.isNotEmpty || newPassword.isNotEmpty) {
         await ApiService.updatePassword(
           userId: widget.user.id,
@@ -159,17 +149,14 @@ class _ProfilePageState extends State<ProfilePage> {
         );
       }
 
-      // 3) UPDATE STATE LOKAL DI HALAMAN INI
       setState(() {
         _name = updatedUserFromApi.name;
         _email = updatedUserFromApi.email;
-        _avatarPath =
-            updatedUserFromApi.avatar; // jaga-jaga kalau backend ikut kirim
+        _avatarPath = updatedUserFromApi.avatar;
         _isSaving = false;
         _isEditing = false;
       });
 
-      // 4) KASIH TAU MAINPAGE BAHWA USER SUDAH BERUBAH
       widget.onUserUpdated(updatedUserFromApi);
 
       if (mounted) {
@@ -240,7 +227,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   // ================== HEADER (FOTO + NAMA) ==================
   Widget _buildProfileHeader(ColorScheme scheme) {
-    // kalau avatarPath ada, bikin URL lengkap ke storage Laravel
     String? avatarUrl;
     if (_avatarPath != null && _avatarPath!.isNotEmpty) {
       avatarUrl = "http://127.0.0.1:8000/storage/$_avatarPath";
